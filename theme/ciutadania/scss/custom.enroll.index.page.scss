@@ -1,0 +1,24 @@
+body#page-enrol-index #page #topofscroll,
+body#page-enrol-index #page #topofscroll #region-main {
+    background-color: $color-lila-clar;
+    color: $color-blanc;
+}
+
+body#page-enrol-index #page #topofscroll header#page-header {
+    display: none;
+}
+
+body#page-enrol-index #page a {
+    color: $color-groc;
+}
+
+body#page-enrol-index #page #topofscroll .coursebox {
+    border-color: $color-blanc;
+}
+
+body#page-enrol-index #page .btn.btn-primary {
+    background-color: $color-lila;
+    border-color: $color-lila-fosc;
+    color: $color-blanc;
+    font-size: 15px;
+}

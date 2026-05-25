@@ -1,0 +1,19 @@
+body:not(:has(.editmode-switch-form)) {
+  .secondary-navigation.d-print-none {
+    display: none !important;
+  }
+}
+
+
+body#page-course-view-topics #page #topofscroll,
+body#page-course-view-topics #page #topofscroll #region-main,
+body#page-course-view-topics #page #topofscroll #region-main a,
+body#page-course-view-topics #page #topofscroll #region-main button,
+body#page-mod-scorm-player #page #topofscroll,
+body#page-mod-scorm-player #page #topofscroll #region-main,
+body#page-mod-scorm-player #page #topofscroll #region-main a,
+body#page-mod-scorm-player #page #topofscroll #region-main button
+ {
+  background-color: $color-lila-clar;
+  color: $color-blanc;
+}

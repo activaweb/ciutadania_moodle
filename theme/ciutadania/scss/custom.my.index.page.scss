@@ -1,0 +1,11 @@
+body#page-my-index #page #topofscroll,
+body#page-my-index #page #topofscroll #page-content #region-main,
+body#page-my-index #page #topofscroll #page-content #region-main section {
+    background-color: $color-lila-clar;
+    color: #FFFFFF;
+    border: 0px;
+}
+
+body#page-my-index #page #topofscroll header {
+    display: none;
+}

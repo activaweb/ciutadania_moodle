@@ -1,0 +1,65 @@
+
+$color-blanc: #FFFFFF;
+$color-groc: #FFFF66;
+$color-lila-clar: #8981C0;
+$color-lila: #50488E;
+$color-lila-fosc: #312C56;
+$color-negre: #000000;
+$color-text: #333333;
+
+$img-fons: url(/theme/ciutadania/img/fons.jpg);
+
+:root,
+.nav,
+.nav-link,
+a {
+    --bs-nav-link-color: #50488E;
+}
+
+body {
+    background-color: $color-lila !important;
+    background-image: $img-fons;
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.pagelayout-login #page {
+    background: transparent;
+    background-color: transparent;
+}
+
+#page-footer {
+    background-color: $color-negre;
+}
+
+#page-footer .policiesfooter2 {
+    display: none;
+}
+
+#block-region-side-pre {
+    display: none;
+}
+
+/* Botons generals */
+button,
+.btn.btn-primary,
+.btn.btn-secondary {
+    background-color: $color-lila;
+    border-color: $color-lila-fosc;
+    color: $color-blanc;
+    font-size: 15px;
+}
+
+.btn.btn-outline-secondary.dropdown-toggle,
+.form-control.withclear.rounded {
+    border-color: $color-lila-fosc;
+    background-color: $color-blanc;
+    color: $color-lila
+}
+
+/* Oculta el menú lateral */
+.drawer.drawer-left.show.d-print-none {
+    display: none;
+}

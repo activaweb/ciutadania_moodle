@@ -1,0 +1,32 @@
+body#page-login-index #page {
+    color: $color-blanc;
+}
+
+body#page-login-index #page a {
+    color: $color-groc;
+}
+
+body#page-login-index #page h1,
+body#page-login-index #page h2,
+body#page-login-index #page h3 {
+    font-size: 18px;
+}
+
+body#page-login-index #page .login-container,
+body#page-login-signup #page  #topofscroll,
+body#page-login-confirm #page  #topofscroll,
+body#page-login-confirm #page  #topofscroll #region-main {
+    background-color: $color-lila-clar;
+    color: $color-blanc;
+}
+
+body#page-login-index #page button,
+body#page-login-index #page a.btn.btn-secondary {
+    background-color: $color-lila;
+    border-color: $color-lila-fosc;
+    color: $color-blanc;
+    font-size: 15px;
+}
+
+
+

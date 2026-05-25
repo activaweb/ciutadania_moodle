@@ -1,0 +1,51 @@
+body#page-login-signup #page {
+    color: $color-blanc;
+    font-size: 15px;
+}
+
+body#page-login-signup #page a {
+    color: $color-groc;
+}
+
+body#page-login-signup #page h1,
+body#page-login-signup #page h2,
+body#page-login-signup #page h3 {
+    font-size: 18px;
+}
+
+
+body#page-login-signup #page {
+    background-image: transparent !important;
+
+}
+
+body#page-login-signup #page .login-container {
+    background-color: $color-lila-clar;
+    color: $color-blanc;
+}
+
+body#page-login-signup #page button,
+body#page-login-signup #page a.btn.btn-secondary,
+body#page-login-signup #page input.btn.btn-primary {
+    background-color: $color-lila;
+    border-color: $color-lila-fosc;
+    color: $color-blanc;
+    font-size: 15px;
+}
+                    
+body#page-login-signup #page input.btn.btn-secondary {
+    background-color: $color-lila-fosc;
+    border-color: $color-lila-fosc;
+    color: $color-blanc;
+    font-size: 15px;
+}
+
+body#page-login-signup #page i.icon.fa.fa-circle-exclamation.text-danger.fa-fw {
+    color: $color-lila-fosc !important;
+}
+
+body#page-login-signup #page a.btn.btn-icon.me-3.icons-collapse-expand.stretched-link.fheader {
+    color: $color-blanc;
+    background-color: $color-lila;
+    border-color: $color-lila-fosc;
+}

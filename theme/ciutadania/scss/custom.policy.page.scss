@@ -1,0 +1,56 @@
+body#page-admin-tool-policy-view #page {
+    color: $color-blanc;
+}
+
+body#page-admin-tool-policy-view #page a {
+    color: $color-groc;
+}
+
+body#page-admin-tool-policy-view #page h1,
+body#page-admin-tool-policy-view #page h2,
+body#page-admin-tool-policy-view #page h3 {
+    font-size: 18px;
+}
+
+
+body#page-admin-tool-policy-view #page {
+    background-image: transparent;
+    
+}
+
+body#page-admin-tool-policy-view #page #page-header {
+    display:none;
+}
+
+body#page-admin-tool-policy-view #page #region-main {
+    background-color: transparent; 
+    color: $color-blanc;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+body#page-admin-tool-policy-view #page table {
+    background-color: $color-lila-clar;
+    border: 0px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+body#page-admin-tool-policy-view #page table tbody,
+body#page-admin-tool-policy-view #page table tr {
+    border: 0px;
+}
+
+body#page-admin-tool-policy-view #page table tr td {
+    padding: 10px;
+    border: 0px;
+}
+
+body#page-admin-tool-policy-view #page button,
+body#page-admin-tool-policy-view #page a.btn.btn-primary {
+    background-color: $color-lila;
+    border-color: $color-lila-fosc;
+    color: $color-blanc;
+    font-size: 15px;
+}

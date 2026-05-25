@@ -1,0 +1,23 @@
+# Ignora tot excepte els plugins propis de ciutadania.cat
+/*
+!.gitignore
+
+# local/
+!local/
+local/*
+!local/ciudadania_certs/
+
+# mod/customcert/element/ (només els elements propis)
+!mod/
+mod/*
+!mod/customcert/
+mod/customcert/*
+!mod/customcert/element/
+mod/customcert/element/*
+!mod/customcert/element/approvedmodules/
+!mod/customcert/element/hourscalculated/
+
+# theme/
+!theme/
+theme/*
+!theme/ciutadania/

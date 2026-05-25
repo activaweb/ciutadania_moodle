@@ -1,0 +1,32 @@
+body#page-site-index #page #topofscroll,
+body#page-site-index #page #topofscroll #region-main,
+body#page-site-index #page #topofscroll .secondary-navigation,
+body#page-site-index #page #topofscroll .secondary-navigation .moremenu.navigation.observed,
+body#page-site-index #page #topofscroll .secondary-navigation .moremenu.navigation.observed ul {
+    background-color: $color-lila-clar;
+    color: $color-blanc;
+}
+
+body#page-site-index #page #topofscroll header#page-header {
+    display: none;
+}
+
+body#page-site-index #page a {
+    color: $color-groc;
+}
+
+body#page-site-index #page #topofscroll .coursebox {
+    border-color: $color-blanc;
+}
+
+
+body#page-site-index #page .moremenu .nav-link.active:focus, .moremenu .nav-link:hover,
+body#page-site-index #page .moremenu .nav-link.active:focus, .moremenu .nav-link.active:hover {
+    background-color: $color-lila-fosc;
+    border-bottom: 1px solid $color-lila-fosc;
+    color: $color-blanc;
+}
+
+body#page-site-index #page .moremenu .nav-link.active:focus, .moremenu .nav-link.active {
+    border-bottom: 1px solid $color-lila-fosc;
+}

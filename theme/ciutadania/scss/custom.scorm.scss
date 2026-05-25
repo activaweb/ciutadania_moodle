@@ -1,0 +1,35 @@
+// SCORM a pantalla completa
+#scorm-view-page #topofscroll,
+#page-course-view-topics #topofscroll {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+#page-course-view-topics #page {
+    padding-left: 0 !important;
+    margin-left: 30px !important;
+}
+
+#scorm-view-page #region-main {
+    width: 100%;
+    padding: 0;
+}
+
+#scorm_object {
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.modtype_scorm .activityiconcontainer .activityicon {
+    filter: brightness(0) invert(1) !important;
+}
+
+body:not(:has(.editmode-switch-form)) {
+    .flex-fill.d-flex.justify-content-end.me-2.align-self-start.mt-2 {
+        display: none !important;
+    }
+}
