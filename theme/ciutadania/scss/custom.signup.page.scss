@@ -19,7 +19,8 @@ body#page-login-signup #page {
 
 }
 
-body#page-login-signup #page .login-container {
+body#page-login-signup #page .login-container,
+body#page-login-signup #page #region-main {
     background-color: $color-lila-clar;
     color: $color-blanc;
 }
