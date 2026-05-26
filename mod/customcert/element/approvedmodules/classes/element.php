@@ -74,20 +74,25 @@ class element extends \mod_customcert\element {
         $data = json_decode($this->get_data(), true);
         $mode = !empty($data['mode']) ? $data['mode'] : 'current';
 
-        // If mode is 'certified', get modules from certification snapshot
+        // If mode is 'certified', get modules from certification snapshot.
+        // Returns null (not empty array) when no payment has been made yet,
+        // so the renderer can show a specific "pending payment" message.
         if ($mode === 'certified' && class_exists('\local_ciudadania_certs\snapshot_manager')) {
             $certifiedmodules = \local_ciudadania_certs\snapshot_manager::get_certified_modules($user->id, $COURSE->id);
-            if (!empty($certifiedmodules)) {
-                $modules = [];
-                foreach ($certifiedmodules as $module) {
-                    $modules[] = (object)[
-                        'name'         => $module['name'],
-                        'grade'        => $module['grade'],
-                        'timemodified' => $module['timemodified'] ?? 0,
-                    ];
-                }
-                return $modules;
+
+            if (empty($certifiedmodules)) {
+                return null;
             }
+
+            $modules = [];
+            foreach ($certifiedmodules as $module) {
+                $modules[] = (object)[
+                    'name'         => $module['name'],
+                    'grade'        => $module['grade'],
+                    'timemodified' => $module['timemodified'] ?? 0,
+                ];
+            }
+            return $modules;
         }
 
         // Default: get current approved modules using snapshot_manager logic.
@@ -111,6 +116,10 @@ class element extends \mod_customcert\element {
      * @return string HTML table
      */
     protected function format_modules_list($modules) {
+        if ($modules === null) {
+            return get_string('nopaymentmade', 'customcertelement_approvedmodules');
+        }
+
         if (empty($modules)) {
             return get_string('nomodulesapproved', 'customcertelement_approvedmodules');
         }

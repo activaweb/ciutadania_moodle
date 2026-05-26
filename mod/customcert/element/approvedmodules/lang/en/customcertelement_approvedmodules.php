@@ -8,3 +8,4 @@ $string['mode_certified'] = 'Last certified modules (from last payment)';
 $string['showgrades'] = 'Show grades';
 $string['showgrades_help'] = 'Show the grade alongside each module name (e.g., "Module name (85/100)")';
 $string['nomodulesapproved'] = 'No modules approved with grade ≥70/100';
+$string['nopaymentmade'] = 'You must complete the payment process to obtain the official certificate.';
