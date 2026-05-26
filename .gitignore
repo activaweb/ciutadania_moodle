@@ -7,6 +7,13 @@
 local/*
 !local/ciudadania_certs/
 
+# availability/condition/ (només la condició pròpia)
+!availability/
+availability/*
+!availability/condition/
+availability/condition/*
+!availability/condition/ciudadania/
+
 # mod/customcert/element/ (només els elements propis)
 !mod/
 mod/*
