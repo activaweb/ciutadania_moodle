@@ -1,15 +1,7 @@
-/**
- * JavaScript for form editing ciudadania payment condition.
- * This condition has no configurable options — it simply shows the title.
- *
- * @module moodle-availability_ciudadania-form
- */
+YUI.add('moodle-availability_ciudadania-form', function (Y, NAME) {
+
 M.availability_ciudadania = M.availability_ciudadania || {};
 
-/**
- * @class M.availability_ciudadania.form
- * @extends M.core_availability.plugin
- */
 M.availability_ciudadania.form = Y.Object(M.core_availability.plugin);
 
 M.availability_ciudadania.form.initInner = function() {
@@ -30,3 +22,5 @@ M.availability_ciudadania.form.fillValue = function(value, node) {
 M.availability_ciudadania.form.fillErrors = function(errors, node) {
     // No validation needed.
 };
+
+}, '@VERSION@', {"requires": ["base", "node", "event", "moodle-core_availability-form"]});
