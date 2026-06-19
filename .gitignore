@@ -1,6 +1,7 @@
 # Ignora tot excepte els plugins propis de ciutadania.cat
 /*
 !.gitignore
+!docs/
 
 # local/
 !local/
