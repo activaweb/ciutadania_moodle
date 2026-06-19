@@ -98,12 +98,16 @@ class observer {
      * Only resets when:
      *   - The student already has at least one previous snapshot (has paid before).
      *   - The just-completed module is not already in the last snapshot.
-     *   - The global grade conditions are still met (average > 50, module ≥ 35).
+     *   - The just-completed module has grade >= 35 (is an eligible module).
+     *
+     * The average (>= 70) and mandatory modules conditions are NOT checked here —
+     * they are enforced in real-time by the availability condition on the payment
+     * call URL ("availability_ciutadania_diploma"), evaluated at the moment of access.
      */
     private static function maybe_reset_tornada($data, $cm) {
         $lastcertified = snapshot_manager::get_certified_modules($data->userid, $cm->course);
 
-        // No previous snapshot → first payment flow, tornada is already not completed.
+        // No previous snapshot → first payment flow, tornada has never been completed.
         if (empty($lastcertified)) {
             return;
         }
@@ -113,13 +117,37 @@ class observer {
             return;
         }
 
-        // Global grade conditions not met yet.
-        $approved = snapshot_manager::get_current_approved_modules($data->userid, $cm->course);
-        if (empty($approved)) {
+        // Only eligible modules (grade >= 35) unlock a new payment cycle.
+        if (!self::module_has_passing_grade($data->userid, $cm)) {
             return;
         }
 
         self::reset_tornada_completion($data->userid, $cm->course);
+    }
+
+    /**
+     * Returns true if the given module has a grade >= 35/100 for the user.
+     */
+    private static function module_has_passing_grade($userid, $cm) {
+        global $DB;
+
+        $gradeitem = $DB->get_record('grade_items', [
+            'courseid'     => $cm->course,
+            'itemtype'     => 'mod',
+            'itemmodule'   => $cm->modname,
+            'iteminstance' => $cm->instance,
+        ]);
+
+        if (!$gradeitem) {
+            return false;
+        }
+
+        $grade = $DB->get_record('grade_grades', [
+            'itemid' => $gradeitem->id,
+            'userid' => $userid,
+        ]);
+
+        return $grade && !is_null($grade->finalgrade) && round($grade->finalgrade, 0) >= 35;
     }
 
     /**

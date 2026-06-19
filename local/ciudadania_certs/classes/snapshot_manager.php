@@ -88,16 +88,20 @@ class snapshot_manager {
      *
      * Rules:
      *   - Only completed modules count (non-completed are ignored entirely).
-     *   - A module is approved if its grade >= 35/100.
-     *   - The average of ALL completed modules (regardless of grade) must be > 50/100;
-     *     if not, the overall requirement is not met and an empty array is returned.
+     *   - Mandatory modules M1, M2, M3, M4, M10 (by idnumber) must all be completed
+     *     with grade >= 35/100; otherwise an empty array is returned.
+     *   - The average of eligible modules (grade >= 35/100) must be >= 70/100;
+     *     if not, an empty array is returned.
+     *   - Returns only modules with grade >= 35/100.
      *
      * @param int $userid User ID
      * @param int $courseid Course ID
-     * @return array Array of module arrays with keys: cmid, name, grade, timemodified
+     * @return array Array of module arrays with keys: cmid, idnumber, name, grade, timemodified
      */
     public static function get_current_approved_modules($userid, $courseid) {
         global $DB;
+
+        $mandatory_idnumbers = ['M1', 'M2', 'M3', 'M4', 'M10'];
 
         $course = get_course($courseid);
         $completion = new \completion_info($course);
@@ -144,6 +148,7 @@ class snapshot_manager {
 
             $completedmodules[] = [
                 'cmid'         => $cm->id,
+                'idnumber'     => $cm->idnumber,
                 'name'         => $cm->name,
                 'grade'        => round($grade->finalgrade, 0),
                 'timemodified' => $data->timemodified ?? 0,
@@ -154,14 +159,28 @@ class snapshot_manager {
             return [];
         }
 
-        // Check that the average of ALL completed modules exceeds 50/100.
-        $avg = array_sum(array_column($completedmodules, 'grade')) / count($completedmodules);
-        if ($avg <= 50) {
+        // Eligible modules: grade >= 35/100.
+        $eligible = array_values(array_filter($completedmodules, fn($m) => $m['grade'] >= 35));
+
+        if (empty($eligible)) {
             return [];
         }
 
-        // Return only modules with grade >= 35/100.
-        return array_values(array_filter($completedmodules, fn($m) => $m['grade'] >= 35));
+        // All mandatory modules must be present and eligible (grade >= 35).
+        $eligible_idnumbers = array_column($eligible, 'idnumber');
+        foreach ($mandatory_idnumbers as $mid) {
+            if (!in_array($mid, $eligible_idnumbers)) {
+                return [];
+            }
+        }
+
+        // Average of eligible modules must be >= 70/100.
+        $avg = array_sum(array_column($eligible, 'grade')) / count($eligible);
+        if ($avg < 70) {
+            return [];
+        }
+
+        return $eligible;
     }
 
     /**

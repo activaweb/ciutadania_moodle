@@ -13,6 +13,7 @@ availability/*
 !availability/condition/
 availability/condition/*
 !availability/condition/ciudadania/
+!availability/condition/ciutadania_diploma/
 
 # mod/customcert/element/ (només els elements propis)
 !mod/
