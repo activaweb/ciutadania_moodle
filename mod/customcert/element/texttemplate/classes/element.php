@@ -16,6 +16,13 @@ class element extends \mod_customcert\element {
         parent::render_form_elements($mform);
     }
 
+    public function define_defaults($mform) {
+        $data = json_decode($this->get_data(), true);
+        if (isset($data['template'])) {
+            $mform->setDefault('template', $data['template']);
+        }
+    }
+
     public function save_unique_data($data) {
         return json_encode(['template' => $data->template ?? '']);
     }
