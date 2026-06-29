@@ -124,12 +124,11 @@ class element extends \mod_customcert\element {
             return get_string('nomodulesapproved', 'customcertelement_approvedmodules');
         }
 
-        $p = 'customcertelement_approvedmodules';
         $header = '<tr>'
-            . '<th><b>' . get_string('col_assignatura',  $p) . '</b></th>'
-            . '<th><b>' . get_string('col_hores',        $p) . '</b></th>'
-            . '<th><b>' . get_string('col_data',         $p) . '</b></th>'
-            . '<th><b>' . get_string('col_qualificacio', $p) . '</b></th>'
+            . '<th><b>Assignatura</b></th>'
+            . '<th><b>Hores reglades</b></th>'
+            . '<th><b>Data finalització</b></th>'
+            . '<th><b>Qualificació</b></th>'
             . '</tr>';
 
         $rows = '';
