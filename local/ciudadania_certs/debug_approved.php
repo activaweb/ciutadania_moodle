@@ -21,7 +21,9 @@ if ($is_cli) {
 } else {
     require_once(__DIR__ . '/../../../config.php');
     require_login();
-    require_capability('moodle/site:config', context_system::instance());
+    if (!is_siteadmin()) {
+        throw new moodle_exception('accessdenied', 'admin');
+    }
     $userid   = required_param('userid', PARAM_INT);
     $courseid = required_param('courseid', PARAM_INT);
 }
