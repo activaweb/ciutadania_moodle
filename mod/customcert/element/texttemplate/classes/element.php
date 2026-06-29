@@ -46,10 +46,6 @@ class element extends \mod_customcert\element {
 
         $snapshot = $this->get_snapshot_data($user->id, $COURSE->id);
 
-        if ($snapshot === null) {
-            return get_string('nopaymentmade', 'customcertelement_texttemplate');
-        }
-
         $vars = $this->build_vars($user, $COURSE, $snapshot);
 
         return str_replace(array_keys($vars), array_values($vars), $template);
@@ -104,20 +100,20 @@ class element extends \mod_customcert\element {
             : '-';
 
         return [
-            '{nom_complet}'                       => fullname($user),
-            '{nom}'                               => $user->firstname,
-            '{cognoms}'                           => $user->lastname,
-            '{dni_nif}'                           => !empty($user->idnumber) ? $user->idnumber : '-',
-            '{total_moduls}'                      => $snapshot['total'],
-            '{nota_mitja}'                        => number_format($snapshot['avg'], 1),
-            '{total_hores}'                       => $snapshot['hours'],
-            '{nom_curs}'                          => format_string($course->fullname),
-            '{data_inici_curs}'                   => $this->get_enrolment_date($user->id, $course->id),
-            '{data_finalitzacio_modul_mes_recent}' => $this->get_latest_completion_date($snapshot),
-            '{numero_referencia_certificat}'      => $this->get_cert_reference($user->id, $course->id),
-            '{data_emissio}'                      => $certdate,
-            '{data_certificat}'                   => $certdate,
-            '{data_avui}'                         => userdate(time(), $datefmt),
+            '{nom_complet}'                        => fullname($user),
+            '{nom}'                                => $user->firstname,
+            '{cognoms}'                            => $user->lastname,
+            '{dni_nif}'                            => !empty($user->idnumber) ? $user->idnumber : '-',
+            '{total_moduls}'                       => $snapshot ? $snapshot['total'] : '-',
+            '{nota_mitja}'                         => $snapshot ? number_format($snapshot['avg'], 1) : '-',
+            '{total_hores}'                        => $snapshot ? $snapshot['hours'] : '-',
+            '{nom_curs}'                           => format_string($course->fullname),
+            '{data_inici_curs}'                    => $this->get_enrolment_date($user->id, $course->id),
+            '{data_finalitzacio_modul_mes_recent}' => $snapshot ? $this->get_latest_completion_date($snapshot) : '-',
+            '{numero_referencia_certificat}'       => $snapshot ? $this->get_cert_reference($user->id, $course->id) : '-',
+            '{data_emissio}'                       => $certdate,
+            '{data_certificat}'                    => $certdate,
+            '{data_avui}'                          => userdate(time(), $datefmt),
         ];
     }
 
