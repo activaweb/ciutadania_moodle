@@ -9,3 +9,7 @@ $string['showgrades'] = 'Show grades';
 $string['showgrades_help'] = 'Show the grade alongside each module name (e.g., "Module name (85/100)")';
 $string['nomodulesapproved'] = 'No modules approved with grade ≥70/100';
 $string['nopaymentmade'] = 'You must complete the payment process to obtain the official certificate.';
+$string['col_assignatura']  = 'Subject';
+$string['col_hores']        = 'Regulated hours';
+$string['col_data']         = 'Completion date';
+$string['col_qualificacio'] = 'Grade';
