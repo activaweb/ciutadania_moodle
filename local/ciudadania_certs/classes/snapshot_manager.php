@@ -198,4 +198,25 @@ class snapshot_manager {
             'courseid' => $courseid
         ]);
     }
+
+    /**
+     * Get the timestamp of the most recent certification snapshot.
+     *
+     * @param int $userid User ID
+     * @param int $courseid Course ID
+     * @return int|null Timestamp or null if no snapshot exists
+     */
+    public static function get_last_snapshot_time($userid, $courseid) {
+        global $DB;
+
+        $record = $DB->get_record_sql(
+            "SELECT timecreated FROM {ciudadania_certifications}
+             WHERE userid = :userid AND courseid = :courseid
+             ORDER BY timecreated DESC
+             LIMIT 1",
+            ['userid' => $userid, 'courseid' => $courseid]
+        );
+
+        return $record ? (int)$record->timecreated : null;
+    }
 }

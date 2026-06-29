@@ -25,6 +25,7 @@ mod/customcert/*
 mod/customcert/element/*
 !mod/customcert/element/approvedmodules/
 !mod/customcert/element/hourscalculated/
+!mod/customcert/element/texttemplate/
 
 # theme/
 !theme/
