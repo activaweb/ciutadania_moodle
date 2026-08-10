@@ -17,3 +17,35 @@ body#page-mod-scorm-player #page #topofscroll #region-main button
   background-color: $color-lila-clar;
   color: $color-blanc;
 }
+
+body#page-course-view-topics #page .activity-icon.activityiconcontainer.smaller.content.courseicon.align-self-start.me-2 img {
+    content: url('/theme/ciutadania/img/info.svg');
+    filter:none;
+}
+
+body#page-mod-page-view #page .page-context-header.d-flex.flex-wrap.align-items-center.mb-2 {
+  display:none !important;
+}
+
+body#page-mod-page-view #page #page-content {
+  padding: 20px;
+}
+
+body#page-mod-page-view #page #page-content ol.llistaDani {
+  background-color: rgb(248, 249, 250);
+  border-bottom: 8px;
+  color: rgb(29, 33, 37);
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22.5px;
+  margin: 15px 0px !important;
+  padding: 16px !important;
+  scrollbar-color: rgb(106, 115, 123) rgb(248, 249, 250);
+  text-align: start;
+  text-size-adjust: 100%;
+}
+
+body#page-mod-page-view #page #page-content ol.llistaDani li {
+  margin-left: 15px;
+}
