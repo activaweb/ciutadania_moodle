@@ -25,7 +25,11 @@ class condition extends \core_availability\condition {
     }
 
     /**
-     * Returns true if the user currently meets all diploma conditions.
+     * Returns true if the user currently meets all diploma conditions AND has at
+     * least one eligible module that is not yet part of their last paid snapshot
+     * (i.e. there is something new worth paying for). Without this check, a
+     * still-eligible user who has already certified everything they qualify for
+     * would keep seeing the payment button, letting them pay again for nothing.
      *
      * @param bool $not True if condition is inverted.
      */
@@ -37,7 +41,13 @@ class condition extends \core_availability\condition {
             $courseid
         );
 
-        $meets = !empty($eligible);
+        $meets = false;
+        if (!empty($eligible)) {
+            $certified = \local_ciudadania_certs\snapshot_manager::get_certified_modules($userid, $courseid);
+            $certifiedcmids = array_column($certified, 'cmid');
+            $eligiblecmids = array_column($eligible, 'cmid');
+            $meets = !empty(array_diff($eligiblecmids, $certifiedcmids));
+        }
 
         return $not ? !$meets : $meets;
     }
