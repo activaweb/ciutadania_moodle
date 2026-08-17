@@ -88,12 +88,13 @@ class observer {
     }
 
     // -------------------------------------------------------------------------
-    // Tornada reset
+    // Payment reset
     // -------------------------------------------------------------------------
 
     /**
-     * After a regular module is completed, resets the "URL tornada" completion
-     * so the student can initiate a new payment round.
+     * After a regular module is completed, resets the completion of the payment
+     * activity the student last paid through, so a new completion (= new payment)
+     * can be detected and a new snapshot created.
      *
      * Only resets when:
      *   - The student already has at least one previous snapshot (has paid before).
@@ -107,7 +108,7 @@ class observer {
     private static function maybe_reset_tornada($data, $cm) {
         $lastcertified = snapshot_manager::get_certified_modules($data->userid, $cm->course);
 
-        // No previous snapshot → first payment flow, tornada has never been completed.
+        // No previous snapshot → first payment flow, nothing to reset yet.
         if (empty($lastcertified)) {
             return;
         }
@@ -122,7 +123,7 @@ class observer {
             return;
         }
 
-        self::reset_tornada_completion($data->userid, $cm->course);
+        self::reset_last_payment_completion($data->userid, $cm->course);
     }
 
     /**
@@ -151,46 +152,39 @@ class observer {
     }
 
     /**
-     * Finds the "URL tornada" activity in the course and resets its completion
-     * for the given user, unlocking the payment button.
+     * Resets the completion of the payment activity the student last paid
+     * through (identified via the last snapshot's paymentcmid — the source of
+     * truth, since the same "pagament"/"tornada" naming can be reused by more
+     * than one activity in a course), unlocking a new payment round.
      */
-    private static function reset_tornada_completion($userid, $courseid) {
-        global $DB;
+    private static function reset_last_payment_completion($userid, $courseid) {
+        $lastpaymentcmid = snapshot_manager::get_last_payment_cmid($userid, $courseid);
+        if (!$lastpaymentcmid) {
+            return;
+        }
 
         $modinfo = get_fast_modinfo($courseid);
-        $course  = get_course($courseid);
+        if (!isset($modinfo->cms[$lastpaymentcmid])) {
+            return;
+        }
+        $paymentcm = $modinfo->cms[$lastpaymentcmid];
+
+        $course     = get_course($courseid);
         $completion = new \completion_info($course);
 
-        foreach ($modinfo->cms as $tornadacm) {
-            if ($tornadacm->modname !== 'url') {
-                continue;
-            }
-
-            $url = $DB->get_record('url', ['id' => $tornadacm->instance]);
-            if (!$url) {
-                continue;
-            }
-
-            $istornada = (
-                stripos($url->name, 'tornada') !== false ||
-                stripos($url->name, 'retorn')  !== false
-            );
-
-            if (!$istornada) {
-                continue;
-            }
-
-            if (!$completion->is_enabled($tornadacm)) {
-                continue;
-            }
-
-            $completiondata = $completion->get_data($tornadacm, false, $userid);
-            $completiondata->completionstate = COMPLETION_INCOMPLETE;
-            $completiondata->timemodified    = time();
-            $completion->internal_set_data($tornadacm, $completiondata, true);
-
-            mtrace("Tornada completion reset for user {$userid} in course {$courseid}.");
-            break;
+        if (!$completion->is_enabled($paymentcm)) {
+            return;
         }
+
+        $completiondata = $completion->get_data($paymentcm, false, $userid);
+        if ($completiondata->completionstate == COMPLETION_INCOMPLETE) {
+            return;
+        }
+
+        $completiondata->completionstate = COMPLETION_INCOMPLETE;
+        $completiondata->timemodified    = time();
+        $completion->internal_set_data($paymentcm, $completiondata, true);
+
+        mtrace("Payment completion reset for user {$userid} in course {$courseid} (cmid {$lastpaymentcmid}).");
     }
 }

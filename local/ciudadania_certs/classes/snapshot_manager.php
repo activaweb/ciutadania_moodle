@@ -219,4 +219,25 @@ class snapshot_manager {
 
         return $record ? (int)$record->timecreated : null;
     }
+
+    /**
+     * Get the course module ID of the payment activity used for the most recent snapshot.
+     *
+     * @param int $userid User ID
+     * @param int $courseid Course ID
+     * @return int|null The cmid, or null if no snapshot exists
+     */
+    public static function get_last_payment_cmid($userid, $courseid) {
+        global $DB;
+
+        $record = $DB->get_record_sql(
+            "SELECT paymentcmid FROM {ciudadania_certifications}
+             WHERE userid = :userid AND courseid = :courseid
+             ORDER BY timecreated DESC
+             LIMIT 1",
+            ['userid' => $userid, 'courseid' => $courseid]
+        );
+
+        return $record ? (int)$record->paymentcmid : null;
+    }
 }
