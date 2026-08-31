@@ -38,7 +38,55 @@ class snapshot_manager {
         $record->total_hours = count($modules) * 2;
         $record->timecreated = time();
 
-        return $DB->insert_record('ciudadania_certifications', $record);
+        $result = $DB->insert_record('ciudadania_certifications', $record);
+
+        if ($result) {
+            self::update_certificate_issue_date($userid, $courseid, $record->timecreated);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Refreshes the "issued date" of the official certificate (mod_customcert instance
+     * whose "approvedmodules" element is configured in "certified" mode) so that it
+     * reflects the latest payment instead of staying frozen at the first one.
+     *
+     * mod_customcert only creates a customcert_issues row the first time a user opens
+     * the certificate (see mod/customcert/view.php) and never touches it again on
+     * subsequent visits, so its "timecreated" (used by the "date" element configured
+     * as "issued date") would otherwise always show the date of the first certification.
+     *
+     * @param int $userid User ID
+     * @param int $courseid Course ID
+     * @param int $time Timestamp to set as the new issue date
+     */
+    private static function update_certificate_issue_date($userid, $courseid, $time) {
+        global $DB;
+
+        $customcertid = $DB->get_field_sql(
+            "SELECT c.id
+               FROM {customcert} c
+               JOIN {customcert_templates} t ON t.id = c.templateid
+               JOIN {customcert_pages} p ON p.templateid = t.id
+               JOIN {customcert_elements} e ON e.pageid = p.id
+              WHERE c.course = :courseid
+                AND e.element = 'approvedmodules'
+                AND " . $DB->sql_like('e.data', ':mode') . "
+              LIMIT 1",
+            ['courseid' => $courseid, 'mode' => '%"mode":"certified"%']
+        );
+
+        if (!$customcertid) {
+            return;
+        }
+
+        // Only touch an issue that already exists; if the student hasn't opened the
+        // certificate yet, mod_customcert will create it with the correct time itself.
+        $DB->set_field('customcert_issues', 'timecreated', $time, [
+            'userid' => $userid,
+            'customcertid' => $customcertid,
+        ]);
     }
 
     /**
