@@ -153,7 +153,7 @@ class snapshot_manager {
 
         $course = get_course($courseid);
         $completion = new \completion_info($course);
-        $modinfo = get_fast_modinfo($courseid);
+        $modinfo = get_fast_modinfo($courseid, $userid);
 
         $gradeitems = $DB->get_records('grade_items', [
             'courseid' => $courseid,
