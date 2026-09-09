@@ -124,11 +124,20 @@ class element extends \mod_customcert\element {
             return get_string('nomodulesapproved', 'customcertelement_approvedmodules');
         }
 
+        // TCPDF's HTML table engine does not auto-fit column widths to content: any
+        // column without an explicit width just gets an equal share of the table
+        // width, it does not inherit whatever space the other columns leave over.
+        // So the "name column takes the rest" effect is approximated with fixed
+        // percentages instead (name column gets the largest share, the other three
+        // get just enough for their short, fixed-format content).
+        $namestyle = 'text-align:left; padding:0 2px;';
+        $colstyle = 'text-align:center; padding:0 10px; white-space:nowrap;';
+
         $header = '<tr>'
-            . '<th><b>Assignatura</b></th>'
-            . '<th><b>Hores reglades</b></th>'
-            . '<th><b>Data finalització</b></th>'
-            . '<th><b>Qualificació</b></th>'
+            . '<th width="45%" style="' . $namestyle . '"><b>Assignatura</b></th>'
+            . '<th width="15%" style="' . $colstyle . '"><b>Hores reglades</b></th>'
+            . '<th width="17%" style="' . $colstyle . '"><b>Data finalització</b></th>'
+            . '<th width="13%" style="' . $colstyle . '"><b>Qualificació</b></th>'
             . '</tr>';
 
         $rows = '';
@@ -138,14 +147,14 @@ class element extends \mod_customcert\element {
                 : '-';
             $grade10 = number_format($module->grade / 10, 1);
             $rows .= '<tr>'
-                . '<td>' . htmlspecialchars($module->name) . '</td>'
-                . '<td>2h</td>'
-                . '<td>' . $date . '</td>'
-                . '<td>' . $grade10 . '/10</td>'
+                . '<td width="45%" style="' . $namestyle . '">' . htmlspecialchars($module->name) . '</td>'
+                . '<td width="15%" style="' . $colstyle . '">2h</td>'
+                . '<td width="17%" style="' . $colstyle . '">' . $date . '</td>'
+                . '<td width="13%" style="' . $colstyle . '">' . $grade10 . '/10</td>'
                 . '</tr>';
         }
 
-        return '<table border="0" cellpadding="2" cellspacing="0">'
+        return '<table border="0" cellpadding="0" cellspacing="0">'
             . $header
             . $rows
             . '</table>';
