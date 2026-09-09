@@ -6,6 +6,13 @@ defined('MOODLE_INTERNAL') || die();
 class element extends \mod_customcert\element {
 
     public function render_form_elements($mform) {
+        $mform->addElement('select', 'mode', get_string('mode', 'customcertelement_texttemplate'), [
+            'current' => get_string('mode_current', 'customcertelement_texttemplate'),
+            'certified' => get_string('mode_certified', 'customcertelement_texttemplate'),
+        ]);
+        $mform->setDefault('mode', 'certified');
+        $mform->addHelpButton('mode', 'mode', 'customcertelement_texttemplate');
+
         $mform->addElement('textarea', 'template',
             get_string('template', 'customcertelement_texttemplate'),
             ['rows' => 6, 'cols' => 60]
@@ -22,11 +29,17 @@ class element extends \mod_customcert\element {
             $element = $mform->getElement('template');
             $element->setValue($data['template']);
         }
+        if (!empty($data['mode'])) {
+            $mform->getElement('mode')->setValue($data['mode']);
+        }
         parent::definition_after_data($mform);
     }
 
     public function save_unique_data($data) {
-        return json_encode(['template' => $data->template ?? '']);
+        return json_encode([
+            'template' => $data->template ?? '',
+            'mode' => !empty($data->mode) ? $data->mode : 'certified',
+        ]);
     }
 
     public function render($pdf, $preview, $user) {
@@ -44,8 +57,6 @@ class element extends \mod_customcert\element {
      * Resolves the template text replacing all variables with actual values.
      */
     protected function get_rendered_text($user) {
-        global $COURSE;
-
         $data = json_decode($this->get_data(), true);
         $template = $data['template'] ?? '';
 
@@ -53,36 +64,67 @@ class element extends \mod_customcert\element {
             return '';
         }
 
-        $snapshot = $this->get_snapshot_data($user->id, $COURSE->id);
+        $course = $this->get_course();
+        $mode = !empty($data['mode']) ? $data['mode'] : 'certified';
+        $snapshot = $this->get_snapshot_data($user->id, $course->id, $mode);
 
-        $vars = $this->build_vars($user, $COURSE, $snapshot);
+        $vars = $this->build_vars($user, $course, $snapshot);
 
         return str_replace(array_keys($vars), array_values($vars), $template);
     }
 
     /**
-     * Returns snapshot data for this user, or null if no payment has been made.
-     * Falls back to current approved modules in preview mode.
+     * Returns the course this element's certificate belongs to.
+     *
+     * Deliberately avoids the global $COURSE, which other code invoked during PDF
+     * generation (e.g. rendering an earlier element on the same page) can leave
+     * pointing at the wrong course by the time this element renders.
      */
-    protected function get_snapshot_data($userid, $courseid) {
+    protected function get_course() {
+        global $DB;
+
+        $courseid = $DB->get_field_sql(
+            "SELECT cc.course
+               FROM {customcert_pages} cp
+               JOIN {customcert_templates} ct ON ct.id = cp.templateid
+               JOIN {customcert} cc ON cc.templateid = ct.id
+              WHERE cp.id = :pageid",
+            ['pageid' => $this->get_pageid()],
+            MUST_EXIST
+        );
+
+        return get_course($courseid);
+    }
+
+    /**
+     * Returns snapshot data for this user, or null if there is nothing to show.
+     *
+     * Mode "current" always reflects live progress (for a diploma of attendance
+     * that must update as soon as a module is completed, regardless of payment).
+     * Mode "certified" (default, for backwards compatibility with elements saved
+     * before the mode selector existed) prefers the last paid snapshot, falling
+     * back to current approved modules only when no payment has been made yet
+     * (e.g. template previews).
+     */
+    protected function get_snapshot_data($userid, $courseid, $mode = 'certified') {
         if (!class_exists('\local_ciudadania_certs\snapshot_manager')) {
             return null;
         }
 
-        $certified = \local_ciudadania_certs\snapshot_manager::get_certified_modules($userid, $courseid);
-
-        if (!empty($certified)) {
-            $grades = array_column($certified, 'grade');
-            return [
-                'modules'     => $certified,
-                'total'       => count($certified),
-                'hours'       => count($certified) * 2,
-                'avg'         => array_sum($grades) / count($grades),
-                'timecreated' => \local_ciudadania_certs\snapshot_manager::get_last_snapshot_time($userid, $courseid),
-            ];
+        if ($mode !== 'current') {
+            $certified = \local_ciudadania_certs\snapshot_manager::get_certified_modules($userid, $courseid);
+            if (!empty($certified)) {
+                $grades = array_column($certified, 'grade');
+                return [
+                    'modules'     => $certified,
+                    'total'       => count($certified),
+                    'hours'       => count($certified) * 2,
+                    'avg'         => array_sum($grades) / count($grades),
+                    'timecreated' => \local_ciudadania_certs\snapshot_manager::get_last_snapshot_time($userid, $courseid),
+                ];
+            }
         }
 
-        // Preview fallback: use current approved modules.
         $current = \local_ciudadania_certs\snapshot_manager::get_current_approved_modules($userid, $courseid);
         if (!empty($current)) {
             $grades = array_column($current, 'grade');

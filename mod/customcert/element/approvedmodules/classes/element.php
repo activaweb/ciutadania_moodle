@@ -26,6 +26,25 @@ class element extends \mod_customcert\element {
     }
 
     /**
+     * Pre-fills the form with the previously saved values.
+     *
+     * Without this, the "mode" and "showgrades" selects always fall back to their
+     * form defaults when editing an existing element, so simply opening and
+     * re-saving an already-configured element (e.g. one set to "certified" for
+     * the official certificate) would silently reset it to "current".
+     */
+    public function definition_after_data($mform) {
+        $data = json_decode($this->get_data(), true);
+        if (!empty($data['mode'])) {
+            $mform->getElement('mode')->setValue($data['mode']);
+        }
+        if (isset($data['showgrades'])) {
+            $mform->getElement('showgrades')->setValue($data['showgrades']);
+        }
+        parent::definition_after_data($mform);
+    }
+
+    /**
      * Renders this element on the PDF.
      */
     public function render($pdf, $preview, $user) {
@@ -64,11 +83,11 @@ class element extends \mod_customcert\element {
      * @return array Array of module objects with name, grade, and timemodified
      */
     protected function get_approved_modules($user) {
-        global $COURSE;
-
         if (empty($user->id)) {
             return [];
         }
+
+        $courseid = $this->get_courseid();
 
         // Get mode from saved data
         $data = json_decode($this->get_data(), true);
@@ -78,7 +97,7 @@ class element extends \mod_customcert\element {
         // Returns null (not empty array) when no payment has been made yet,
         // so the renderer can show a specific "pending payment" message.
         if ($mode === 'certified' && class_exists('\local_ciudadania_certs\snapshot_manager')) {
-            $certifiedmodules = \local_ciudadania_certs\snapshot_manager::get_certified_modules($user->id, $COURSE->id);
+            $certifiedmodules = \local_ciudadania_certs\snapshot_manager::get_certified_modules($user->id, $courseid);
 
             if (empty($certifiedmodules)) {
                 return null;
@@ -96,7 +115,7 @@ class element extends \mod_customcert\element {
         }
 
         // Default: get current approved modules using snapshot_manager logic.
-        $raw = \local_ciudadania_certs\snapshot_manager::get_current_approved_modules($user->id, $COURSE->id);
+        $raw = \local_ciudadania_certs\snapshot_manager::get_current_approved_modules($user->id, $courseid);
         $approvedmodules = [];
         foreach ($raw as $m) {
             $approvedmodules[] = (object)[
@@ -107,6 +126,27 @@ class element extends \mod_customcert\element {
         }
 
         return $approvedmodules;
+    }
+
+    /**
+     * Returns the id of the course this element's certificate belongs to.
+     *
+     * Deliberately avoids the global $COURSE, which other code invoked during PDF
+     * generation (e.g. rendering an earlier element on the same page) can leave
+     * pointing at the wrong course by the time this element renders.
+     */
+    protected function get_courseid() {
+        global $DB;
+
+        return $DB->get_field_sql(
+            "SELECT cc.course
+               FROM {customcert_pages} cp
+               JOIN {customcert_templates} ct ON ct.id = cp.templateid
+               JOIN {customcert} cc ON cc.templateid = ct.id
+              WHERE cp.id = :pageid",
+            ['pageid' => $this->get_pageid()],
+            MUST_EXIST
+        );
     }
 
     /**

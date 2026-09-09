@@ -1,5 +1,9 @@
 <?php
 $string['pluginname']    = 'Text with variables';
+$string['mode']          = 'Data mode';
+$string['mode_help']     = 'Choose which data the {total_moduls}, {nota_mitja}, {total_hores} and date variables use:<br>• <strong>Current approved modules</strong>: always reflects live progress (for a free diploma of attendance)<br>• <strong>Last certified modules</strong>: only updates on the next payment (for the official certificate)';
+$string['mode_current']  = 'Current approved modules (live)';
+$string['mode_certified'] = 'Last certified modules (from the last payment)';
 $string['template']      = 'Template text';
 $string['template_help'] = 'Write the text that will appear on the certificate. You can use the following variables:
 

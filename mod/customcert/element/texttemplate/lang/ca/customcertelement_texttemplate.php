@@ -1,5 +1,9 @@
 <?php
 $string['pluginname']    = 'Text amb variables';
+$string['mode']          = 'Mode de dades';
+$string['mode_help']     = 'Tria quines dades fan servir les variables {total_moduls}, {nota_mitja}, {total_hores} i les de data:<br>• <strong>Mòduls aprovats actuals</strong>: sempre reflecteix el progrés en viu (per al diploma gratuït)<br>• <strong>Últims mòduls certificats</strong>: només s\'actualitza en el proper pagament (per al certificat oficial)';
+$string['mode_current']  = 'Mòduls aprovats actuals (dinàmic)';
+$string['mode_certified'] = 'Últims mòduls certificats (de l\'últim pagament)';
 $string['template']      = 'Text de la plantilla';
 $string['template_help'] = 'Escriu el text que apareixerà al certificat. Pots usar les variables següents:
 
