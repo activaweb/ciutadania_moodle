@@ -162,6 +162,7 @@ class element extends \mod_customcert\element {
             '{data_inici_curs}'                    => $this->get_enrolment_date($user->id, $course->id),
             '{data_finalitzacio_modul_mes_recent}' => $snapshot ? $this->get_latest_completion_date($snapshot) : '-',
             '{numero_referencia_certificat}'       => $snapshot ? $this->get_cert_reference($user->id, $course->id) : '-',
+            '{mencions}'                           => $snapshot ? $this->get_mencions_text($snapshot, $course->id) : '-',
             '{data_emissio}'                       => $certdate,
             '{data_certificat}'                    => $certdate,
             '{data_avui}'                          => userdate(time(), $datefmt),
@@ -204,6 +205,19 @@ class element extends \mod_customcert\element {
         }
 
         return userdate(max($times), get_string('strftimedate', 'langconfig'));
+    }
+
+    /**
+     * Returns the comma-separated list of mencions/itineraris earned by the modules
+     * in the given snapshot.
+     */
+    protected function get_mencions_text($snapshot, $courseid) {
+        if (!class_exists('\local_ciudadania_certs\mencions_helper')) {
+            return '-';
+        }
+
+        $mencions = \local_ciudadania_certs\mencions_helper::get_earned_mencions($snapshot['modules'], $courseid);
+        return implode(', ', $mencions);
     }
 
     /**

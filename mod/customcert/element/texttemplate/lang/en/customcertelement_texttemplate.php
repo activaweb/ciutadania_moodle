@@ -19,5 +19,6 @@ $string['template_help'] = 'Write the text that will appear on the certificate. 
 {data_finalitzacio_modul_mes_recent} — Completion date of the most recently completed module
 {numero_referencia_certificat} — Unique certificate reference (e.g. CERT-2026-00042)
 {data_emissio} — Certificate issue date (= payment date)
-{data_avui} — Today\'s date (at print time)';
+{data_avui} — Today\'s date (at print time)
+{mencions} — Comma-separated list of mencions/tracks earned with this certificate\'s modules. Configured under Site administration → Plugins → Local plugins → CiutadanIA Certifications';
 $string['nopaymentmade'] = 'No payment has been made yet.';

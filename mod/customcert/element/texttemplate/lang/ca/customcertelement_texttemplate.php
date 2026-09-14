@@ -19,5 +19,6 @@ $string['template_help'] = 'Escriu el text que apareixerà al certificat. Pots u
 {data_finalitzacio_modul_mes_recent} — Data de compleció del mòdul acabat més recentment
 {numero_referencia_certificat} — Referència única del certificat (ex: CERT-2026-00042)
 {data_emissio} — Data d\'emissió del certificat (= data del pagament)
-{data_avui} — Data actual (moment d\'impressió)';
+{data_avui} — Data actual (moment d\'impressió)
+{mencions} — Llista (separada per comes) de les mencions/itineraris assolits amb els mòduls d\'aquest certificat. Es configuren a Arranjament del lloc → Plugins → Complements locals → Certificacions CiutadanIA';
 $string['nopaymentmade'] = 'Encara no s\'ha realitzat cap pagament.';
