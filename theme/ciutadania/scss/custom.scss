@@ -63,3 +63,26 @@ button,
 .drawer.drawer-left.show.d-print-none {
     display: none;
 }
+/* Peu de pàgina: franja de logos (templates/theme_boost/footer.mustache) */
+#page-footer .ciutadania-footer {
+    background-color: $color-negre;
+    text-align: center;
+    padding: 0.5rem 1rem 0.75rem;
+
+    .ciutadania-footer-logos {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .ciutadania-footer-links {
+        margin-top: 0.25rem;
+        font-size: 0.85rem;
+
+        a {
+            color: $color-blanc;
+            text-decoration: underline;
+        }
+    }
+}

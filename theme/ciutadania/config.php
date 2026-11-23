@@ -3,7 +3,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $THEME->name = 'ciutadania';
 $THEME->author = 'Dani Espinosa';
-$THEME->version = 2026012900;
+$THEME->version = 2026112300;
 $THEME->sheets = [];
 $THEME->editor_sheets = [];
 $THEME->parents = ['boost']; // <-- Aquí ocurre la magia
