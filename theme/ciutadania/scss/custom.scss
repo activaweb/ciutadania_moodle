@@ -86,3 +86,11 @@ button,
         }
     }
 }
+
+/* Peu sempre a baix de la pantalla quan el contingut és curt.
+   A Boost, #page-wrapper és flex en columna amb l'alçada de la pantalla, i dins
+   #page.drawers el .main-inner ja té flex: 1 0 auto. Només cal que #page creixi
+   per omplir el wrapper i que no s'encongeixi mai per sota del seu contingut. */
+#page.drawers {
+    flex: 1 0 auto;
+}
