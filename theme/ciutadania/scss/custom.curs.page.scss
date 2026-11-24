@@ -28,7 +28,23 @@ body#page-mod-page-view #page .page-context-header.d-flex.flex-wrap.align-items-
 }
 
 body#page-mod-page-view #page #page-content {
-  padding: 20px;
+	padding: 20px;
+}
+
+body#page-course-view-topics #page #topofscroll {
+	max-height: calc(100vh - 250px);
+	overflow: auto;
+	margin-left: 30px;
+	max-width: 80vw;
+	width: 70vw;
+}
+
+#page.drawers.show-drawer-left {
+	margin-left:0px;
+}
+#page.drawers.show-drawer-left.show-drawer-right {
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 body#page-mod-page-view #page #page-content ol.llistaDani {
