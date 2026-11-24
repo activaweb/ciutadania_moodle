@@ -131,3 +131,50 @@ button,
         border: 2px solid white;
     }
 }
+/* Calaix de blocs de la dreta: fons transparent i cada bloc en lila clar amb text blanc */
+.drawer.drawer-right {
+    background-color: transparent;
+    box-shadow: none;
+
+    .drawerheader,
+    &.scrolled .drawerheader {
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    .block.card {
+        background-color: $color-lila-clar;
+        border-color: $color-lila-clar;
+        color: $color-blanc;
+
+        .card-title,
+        .card-text,
+        a:not(.btn),
+        a:not(.btn):hover,
+        a:not(.btn):focus {
+            color: $color-blanc;
+        }
+    }
+
+    /* Botons del bloc HTML (Qualificacions, Acreditacions, Inici), com a curs.ciutadania.cat */
+    .block_html .btn.btn-primary {
+        background-color: $color-lila;
+        border: 2px solid $color-lila-fosc;
+        border-radius: 10px;
+        color: $color-blanc;
+        font-family: Play, sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 22.5px;
+        padding: 6px 12px;
+        max-height: 48px;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            background-color: $color-lila-fosc;
+            border-color: $color-lila-fosc;
+            color: $color-blanc;
+        }
+    }
+}
