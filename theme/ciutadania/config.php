@@ -10,6 +10,9 @@ $THEME->parents = ['boost']; // <-- Aquí ocurre la magia
 $THEME->enable_dock = false;
 $THEME->yuicssmodules = [];
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+// Cap bloc obligatori. Si no es defineix, Moodle força Navegació i Administració a totes
+// les pàgines (els temes fills no hereten aquest valor de Boost, que també el té buit).
+$THEME->requiredblocks = '';
 $THEME->scss = function($theme) {
     return theme_ciutadania_get_main_scss_content($theme);
 };
