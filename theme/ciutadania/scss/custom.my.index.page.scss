@@ -21,6 +21,8 @@ body#page-my-index.pagelayout-mycourses #page #topofscroll {
     max-height: 50vh;
     overflow: auto; /* si hi ha més cursos dels que hi caben, barra pròpia en lloc de sortir de la caixa */
     margin-bottom: calc(50vh - 211px) !important;
+    width: 60vw;
+    max-width: 60vw;
 
     .card-img-top {
         height: auto !important;
