@@ -9,3 +9,7 @@ body#page-my-index #page #topofscroll #page-content #region-main section {
 body#page-my-index #page #topofscroll header {
     display: none;
 }
+/* Els meus cursos: amaga el cercador i el desplegable "Ordena per..." del bloc Resum dels cursos */
+body#page-my-index .block_myoverview [data-region="filter"] {
+    display: none !important;
+}
