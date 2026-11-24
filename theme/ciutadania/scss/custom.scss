@@ -111,10 +111,9 @@ button,
 }
 
 
+/* Estil de la barra de desplaçament de #topofscroll. L'alçada limitada i el
+   desplaçament propi només són a la pàgina del curs (custom.curs.page.scss). */
 #topofscroll {
-    max-height: calc(100vh - 250px);
-    overflow: auto;
-
     /* Treu les propietats estàndard heretades de Boost; si no, Chrome/Edge ignoren els ::-webkit-scrollbar */
     scrollbar-color: auto;
     scrollbar-width: auto;
