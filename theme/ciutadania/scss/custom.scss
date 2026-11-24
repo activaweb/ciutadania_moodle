@@ -146,6 +146,11 @@ button,
         box-shadow: none;
     }
 
+    /* Espai interior a la dreta perquè els blocs no quedin enganxats a la vora */
+    .drawercontent {
+        padding-right: 30px;
+    }
+
     .block.card {
         background-color: $color-lila-clar;
         border-color: $color-lila-clar;
