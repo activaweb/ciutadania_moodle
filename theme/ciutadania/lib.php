@@ -18,6 +18,18 @@ function theme_ciutadania_page_init(moodle_page $page) {
     }
 }
 
+/**
+ * SCSS que Moodle posa abans de tot el de Boost. Serveix per canviar variables que Boost
+ * defineix amb !default (si es posessin a custom.scss ja seria tard: el CSS ja estaria generat).
+ *
+ * @param theme_config $theme
+ * @return string
+ */
+function theme_ciutadania_get_pre_scss($theme) {
+    // Amplada del calaix de blocs de la dreta (Boost: 315px).
+    return '$drawer-right-width: 400px;';
+}
+
 function theme_ciutadania_get_main_scss_content($theme) {
     global $CFG;
     $scss = '';
