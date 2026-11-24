@@ -13,3 +13,24 @@ body#page-my-index #page #topofscroll header {
 body#page-my-index .block_myoverview [data-region="filter"] {
     display: none !important;
 }
+
+/* Els meus cursos (/my/courses.php). El Tauler (/my/) també és #page-my-index,
+   per això es filtra per .pagelayout-mycourses. */
+body#page-my-index.pagelayout-mycourses #page #topofscroll {
+    height: 40vh;
+    max-height: 50vh;
+    overflow: auto; /* si hi ha més cursos dels que hi caben, barra pròpia en lloc de sortir de la caixa */
+    margin-bottom: calc(50vh - 211px) !important;
+
+    .card-img-top {
+        height: auto !important;
+        aspect-ratio: 1 / 0.55;
+    }
+
+    /* Targetes al 40% només a partir de tauleta; al mòbil continuen a amplada sencera */
+    @include media-breakpoint-up(sm) {
+        .col.d-flex.px-0.mb-2 {
+            width: 40%;
+        }
+    }
+}
